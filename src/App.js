@@ -1,25 +1,58 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useRef } from 'react'
+import './App.css'
 
-function App() {
+const App = () => {
+  const [timer, setTimer] = useState(0)
+  const [isActive, setIsActive] = useState(false)
+  const [isPaused, setIsPaused] = useState(false)
+  const timerRef = useRef(null)
+
+  const startTimer = () => {
+    setIsActive(true)
+    timerRef.current = setInterval(() => {
+      setTimer(timer => timer + 1)
+    }, 1000)
+  }
+
+  const pauseTimer = () => {
+    setIsPaused(true)
+    clearInterval(timerRef.current)
+  }
+
+  const resumeTimer = () => {
+    setIsPaused(false)
+    timerRef.current = setInterval(() => {
+      setTimer(timer => timer + 1)
+    }, 1000)
+  }
+
+  const resetTimer = () => {
+    setIsActive(false)
+    setIsPaused(false)
+    setTimer(0)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <section>{timer}</section>
+
+      <button className={isActive ? 'hidden' : undefined} onClick={startTimer}>
+        Start
+      </button>
+      <button
+        className={(isActive && isPaused) || (!isActive && !isPaused) ? 'hidden' : undefined}
+        onClick={pauseTimer}
+      >
+        Pause
+      </button>
+      <button className={isActive && isPaused ? undefined : 'hidden'} onClick={resumeTimer}>
+        Resume
+      </button>
+      <button className={isActive && isPaused ? undefined : 'hidden'} onClick={resetTimer}>
+        Reset
+      </button>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
