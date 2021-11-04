@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import './App.css'
+import Button from './components/Button'
 
 const App = () => {
   const [timer, setTimer] = useState(0)
@@ -14,16 +15,16 @@ const App = () => {
     }, 1000)
   }
 
-  const pauseTimer = () => {
-    setIsPaused(true)
-    clearInterval(timerRef.current)
-  }
-
-  const resumeTimer = () => {
-    setIsPaused(false)
-    timerRef.current = setInterval(() => {
-      setTimer(timer => timer + 1)
-    }, 1000)
+  const toggleTimer = () => {
+    if (isPaused) {
+      setIsPaused(false)
+      timerRef.current = setInterval(() => {
+        setTimer(timer => timer + 1)
+      }, 1000)
+    } else {
+      setIsPaused(true)
+      clearInterval(timerRef.current)
+    }
   }
 
   const resetTimer = () => {
@@ -33,25 +34,30 @@ const App = () => {
   }
 
   return (
-    <div className='App'>
-      <section>{timer}</section>
-
-      <button className={isActive ? 'hidden' : undefined} onClick={startTimer}>
-        Start
-      </button>
-      <button
-        className={(isActive && isPaused) || (!isActive && !isPaused) ? 'hidden' : undefined}
-        onClick={pauseTimer}
-      >
-        Pause
-      </button>
-      <button className={isActive && isPaused ? undefined : 'hidden'} onClick={resumeTimer}>
-        Resume
-      </button>
-      <button className={isActive && isPaused ? undefined : 'hidden'} onClick={resetTimer}>
-        Reset
-      </button>
-    </div>
+    <main className='App'>
+      <section className='timer-wrapper'>{timer}</section>
+      <section className='btns-wrapper'>
+        {!isActive && (
+          <Button onClick={startTimer} btnColor='#70a288'>
+            Start to Focus
+          </Button>
+        )}
+        {isActive && (
+          <Button
+            onClick={toggleTimer}
+            btnColor={isPaused ? '#70a288' : '#dab785'}
+            textColor={isPaused ? '#FFF' : '#000'}
+          >
+            {isPaused ? 'Continue' : 'Pause'}
+          </Button>
+        )}
+        {isActive && isPaused && (
+          <Button onClick={resetTimer} btnColor='#d5896f'>
+            Reset
+          </Button>
+        )}
+      </section>
+    </main>
   )
 }
 
