@@ -6,11 +6,15 @@
 
 body {
   font-family: 'Poppins';
+  height: 100vh;
+}
+
+#root {
+  height: 100%;
 }
 
 .App {
-  height: 100vh;
-  overflow: hidden;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,5 +22,5 @@ body {
 }
 
 .timer-wrapper {
-  margin-bottom: 5rem;
+  margin-bottom: 3rem;
 }

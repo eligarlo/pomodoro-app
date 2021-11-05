@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import './App.css'
-import Button from './components/Button'
+import Button from './components/button/Button'
+import Timer from './components/timer/Timer'
 
 const App = () => {
   const [timer, setTimer] = useState(0)
@@ -35,7 +36,9 @@ const App = () => {
 
   return (
     <main className='App'>
-      <section className='timer-wrapper'>{timer}</section>
+      <section className='timer-wrapper'>
+        <Timer timer={timer} />
+      </section>
       <section className='btns-wrapper'>
         {!isActive && (
           <Button onClick={startTimer} btnColor='#70a288'>
