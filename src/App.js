@@ -1,27 +1,35 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import './App.css'
 import Button from './components/button/Button'
+import Navigation from './components/navigation/Navigation'
+import SettingsModal from './components/settingsModal/SettingsModal'
 import Timer from './components/timer/Timer'
 
 const App = () => {
-  const [timer, setTimer] = useState(0)
+  const [timer, setTimer] = useState(1500) // 25 min
+  const [focusTime, setFocusTime] = useState(25)
+  const [countDown, setCountDown] = useState(true)
   const [isActive, setIsActive] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
+  const [openSettings, setOpenSettings] = useState(false)
   const timerRef = useRef(null)
+
+  useEffect(() => {
+    countDown ? setTimer(1500) : setTimer(0)
+    setFocusTime()
+  }, [countDown, setTimer])
 
   const startTimer = () => {
     setIsActive(true)
+    setIsPaused(false)
     timerRef.current = setInterval(() => {
-      setTimer(timer => timer + 1)
+      setTimer(timer => (countDown ? timer - 1 : timer + 1))
     }, 1000)
   }
 
   const toggleTimer = () => {
     if (isPaused) {
-      setIsPaused(false)
-      timerRef.current = setInterval(() => {
-        setTimer(timer => timer + 1)
-      }, 1000)
+      startTimer()
     } else {
       setIsPaused(true)
       clearInterval(timerRef.current)
@@ -31,11 +39,20 @@ const App = () => {
   const resetTimer = () => {
     setIsActive(false)
     setIsPaused(false)
-    setTimer(0)
+    countDown ? setTimer(1500) : setTimer(0)
+  }
+
+  const toggleSettings = () => {
+    setOpenSettings(openSettings => !openSettings)
+  }
+
+  const toggleCountBackwards = () => {
+    setCountDown(countDown => !countDown)
   }
 
   return (
     <main className='App'>
+      <Navigation onClick={toggleSettings} />
       <section className='timer-wrapper'>
         <Timer timer={timer} />
       </section>
@@ -60,6 +77,15 @@ const App = () => {
           </Button>
         )}
       </section>
+
+      {/* Settings Modal */}
+      {openSettings && (
+        <SettingsModal
+          closeModal={toggleSettings}
+          toggleCheckbox={toggleCountBackwards}
+          checked={countDown}
+        />
+      )}
     </main>
   )
 }

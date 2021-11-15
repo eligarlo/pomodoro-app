@@ -15,7 +15,7 @@ const Button = ({ children, onClick, btnColor, textColor }) => {
 }
 
 Button.propTypes = {
-  onclick: PropTypes.func.isRequired,
+  onclick: PropTypes.func,
   btnColor: PropTypes.string,
   textColor: PropTypes.string,
 }

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import styles from './timer.module.css'
 
 const Timer = ({ timer }) => {
@@ -19,6 +20,10 @@ const Timer = ({ timer }) => {
       {formatMinutes()} : {formatSeconds()}
     </div>
   )
+}
+
+Timer.propTypes = {
+  timer: PropTypes.number.isRequired,
 }
 
 export default Timer
