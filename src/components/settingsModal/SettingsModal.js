@@ -29,7 +29,7 @@ const SettingsModal = ({
 
         <div className={styles['modal-total-focus']}>
           <span>Focus (min):</span>
-          <input type='number' defaultValue={focusTime} onChange={onFocusTimeChange} />
+          <input type='number' min='1' defaultValue={focusTime} onChange={onFocusTimeChange} />
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import './App.css'
 import Button from './components/button/Button'
 import Navigation from './components/navigation/Navigation'
@@ -50,8 +50,10 @@ const App = () => {
   }
 
   const handleFocusTimeChange = e => {
-    setFocusTime(e.target.value)
-    setTimer(e.target.value * 60)
+    if (e.target.value > 0) {
+      setFocusTime(e.target.value)
+      setTimer(e.target.value * 60)
+    }
   }
 
   return (
