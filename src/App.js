@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import './App.css'
 import Button from './components/button/Button'
 import Navigation from './components/navigation/Navigation'
@@ -16,7 +16,6 @@ const App = () => {
 
   useEffect(() => {
     countDown ? setTimer(1500) : setTimer(0)
-    setFocusTime()
   }, [countDown, setTimer])
 
   const startTimer = () => {
@@ -50,6 +49,11 @@ const App = () => {
     setCountDown(countDown => !countDown)
   }
 
+  const handleFocusTimeChange = e => {
+    setFocusTime(e.target.value)
+    setTimer(e.target.value * 60)
+  }
+
   return (
     <main className='App'>
       <Navigation onClick={toggleSettings} />
@@ -81,9 +85,11 @@ const App = () => {
       {/* Settings Modal */}
       {openSettings && (
         <SettingsModal
-          closeModal={toggleSettings}
-          toggleCheckbox={toggleCountBackwards}
+          onCloseModal={toggleSettings}
+          onToggleCheckbox={toggleCountBackwards}
           checked={countDown}
+          focusTime={focusTime}
+          onFocusTimeChange={handleFocusTimeChange}
         />
       )}
     </main>
